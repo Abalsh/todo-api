@@ -1,0 +1,9 @@
+{
+  "name": "todo-api",
+  "description": "Some project to learn Golang",
+  "owner": "hakeem",
+  "launchpad": "",
+  "type": "service",
+  "status": "unreleased",
+  "region-type": "multi-region"
+}

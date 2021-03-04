@@ -1,0 +1,8 @@
+FROM alpine:latest
+
+USER nobody
+
+WORKDIR /app
+
+COPY git_src/todo-api git_src/scripts/healthcheck.sh /app/
+CMD ["/app/todo-api"]

@@ -1,0 +1,16 @@
+# vendored folder
+vendor
+# temp binary files
+.bin
+# IDEs
+.idea
+# local binary
+todo-api
+# vs code config dir
+.vscode
+# MacOS specific files
+.DS_Store
+
+# Coverage and sonar related folders
+coverage
+.sonar

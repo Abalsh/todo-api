@@ -1,0 +1,18 @@
+version: '2.1'
+services:
+  todo-api:
+    image: vadzappa/gomon-docker:1.16
+    environment:
+      ENV_ID: "dev"
+      SERVICE_NAME: todo-api
+      SERVICE_8080_NAME: todo-api
+      SERVICE_8080_CHECK_HTTP: /todo-api-health
+      GO_NO_DEBUG: "true"
+    volumes:
+      - .:/app:delegated
+    volumes_from:
+      - container:configs-volume:ro
+    network_mode: bridge
+    restart: always
+    ports:
+    - 8080

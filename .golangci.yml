@@ -1,0 +1,9 @@
+linters-settings:
+  depguard:
+    list-type: blacklist
+    include-go-root: true
+    packages-with-error-message:
+      - errors: "Use https://github.com/pkg/errors instead"
+linters:
+  enable:
+    - depguard
