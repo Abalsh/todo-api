@@ -1,21 +1,13 @@
 package todo_api
 
-import (
-	"database/sql"
+import "os"
 
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
-)
+func main() {
+	a := App{}
+	a.Initialize(
+		os.Getenv("APP_DB_USERNAME"),
+		os.Getenv("APP_DB_PASSWORD"),
+		os.Getenv("APP_DB_NAME"))
 
-type App struct {
-	Router *mux.Router
-	DB     *sql.DB
-}
-
-func (a *App) Initialize(user, password, dbname string) {
-
-}
-
-func (a *App) Run(addr string) {
-
+	a.Run(":8010")
 }
