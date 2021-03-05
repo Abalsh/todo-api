@@ -67,3 +67,35 @@ func TestGetGoal(t *testing.T) {
 
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
+
+func TestUpdateGoal(t *testing.T) {
+	clearTable()
+	addGoal(1)
+
+	req, _ := http.NewRequest("GET", "/goal/1", nil)
+	response := executeRequest(req)
+	var originalGoal map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &originalGoal)
+
+	var jsonStr = []byte(`{"name":"test goal updated", "description":"description updated"}`)
+	req, _ = http.NewRequest("PUT", "/goal/1", bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+
+	response = executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["id"] != originalGoal["id"] {
+		t.Errorf("Expected the id to remain the same (%v)!!!! Got %v instead!!", originalGoal["id"], m["id"])
+	}
+	if m["name"] == originalGoal["name"] {
+		t.Errorf("Expected the name to change from %v to  %v !! got '%v'", originalGoal["name"], m["name"], m["name"])
+	}
+	if m["description"] == originalGoal["description"] {
+		t.Errorf("Expected the description to change from %v to  %v !! got '%v'", originalGoal["description"], m["description"], m["description"])
+	}
+
+}
