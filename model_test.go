@@ -97,5 +97,21 @@ func TestUpdateGoal(t *testing.T) {
 	if m["description"] == originalGoal["description"] {
 		t.Errorf("Expected the description to change from %v to  %v !! got '%v'", originalGoal["description"], m["description"], m["description"])
 	}
+}
+func TestdeleteGoal(t *testing.T) {
+	clearTable()
+	addGoal(1)
+
+	req, _ := http.NewRequest("GET", "/goal/1", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ := http.NewRequest("DELETE", "/goal/1", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ := http.NewRequest("GET", "/goal/1", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusNotFound, response.Code)
 
 }
