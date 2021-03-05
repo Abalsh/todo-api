@@ -58,3 +58,12 @@ func TestCreateGoal(t *testing.T) {
 		t.Errorf("Expected ID to be '1'. Got '%v'", m["id"])
 	}
 }
+
+func TestGetGoal(t *testing.T) {
+	clearTable()
+	addGoal(1)
+	req, _ := http.NewRequest("GET", "/goal/1", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+}

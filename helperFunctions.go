@@ -17,3 +17,11 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
 	}
 }
+func addGoal(count int) {
+	if count < 1 {
+		count = 1
+	}
+	for i := 0; i < count; i++ {
+		a.DB.Exec("INSERT INTO goal(name, description) VALUES('Some test goal name', 'Some test goal escription')")
+	}
+}
