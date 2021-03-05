@@ -1,8 +1,8 @@
 package todo_api
 
 import (
+	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
@@ -19,14 +19,16 @@ func TestEmptyTable(t *testing.T) {
 	}
 }
 
-func executeRequest(req *http.Request) *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
-	a.Router.ServeHTTP(rr, req)
-	return rr
-}
+func TestGetNonExistentGoal(t *testing.T) {
+	clearTable()
+	req, _ := http.NewRequest("GET", "/goal/9001", nil)
+	response := executeRequest(req)
 
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
+	checkResponseCode(t, http.StatusNotFound, response.Code)
+	var m map[string]string
+	json.Unmarshal(response.Body.Bytes(), &m)
+	if m["error"] != "Goal not found" {
+		t.Errorf("Expected the 'error' key of the response to be set to 'Goal not found'. Got '%s'", m["error"])
 	}
+
 }
