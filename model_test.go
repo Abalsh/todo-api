@@ -1,6 +1,7 @@
 package todo_api
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"testing"
@@ -31,4 +32,29 @@ func TestGetNonExistentGoal(t *testing.T) {
 		t.Errorf("Expected the 'error' key of the response to be set to 'Goal not found'. Got '%s'", m["error"])
 	}
 
+}
+
+func TestCreateGoal(t *testing.T) {
+	clearTable()
+	var jsonStr = []byte(`{"name":"really bad goal", "description": "don't buy"}`)
+	req, _ := http.NewRequest("POST", "/goal", bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusCreated, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["name"] != "really bad goal" {
+		t.Errorf("Expected Goal name to be 'really bad goal'. Got '%v'", m["name"])
+	}
+	if m["description"] != "don't buy" {
+		t.Errorf("Expected Goal name to be `don't buy`. Got `%v`", m["description"])
+	}
+	// the id is compared to 1.0 because JSON unmarshaling converts numbers to
+	// floats, when the target is a map[string]interface{}
+	if m["id"] != 1.0 {
+		t.Errorf("Expected ID to be '1'. Got '%v'", m["id"])
+	}
 }
