@@ -98,7 +98,7 @@ func TestUpdateGoal(t *testing.T) {
 		t.Errorf("Expected the description to change from %v to  %v !! got '%v'", originalGoal["description"], m["description"], m["description"])
 	}
 }
-func TestdeleteGoal(t *testing.T) {
+func TestDeleteGoal(t *testing.T) {
 	clearTable()
 	addGoal(1)
 
