@@ -20,12 +20,15 @@ func (g *goal) getGoal(db *sql.DB) error {
 func (g *goal) updateGoal(db *sql.DB) error {
 	return errors.New("NOT IMPLEMENTED")
 }
+
 func (g *goal) addGoal(db *sql.DB) error {
 	return errors.New("NOT IMPLEMENTED")
 }
+
 func (g *goal) deleteGoal(db *sql.DB) error {
 	return errors.New("NOT IMPLEMENTED")
 }
-func (g *goal) getGoals(db *sql.DB) error {
-	return errors.New("NOT IMPLEMENTED")
+
+func getGoals(db *sql.DB, start, count int) ([]goal, error) {
+	return nil, errors.New("Not implemented")
 }
