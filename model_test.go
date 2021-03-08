@@ -106,12 +106,12 @@ func TestDeleteGoal(t *testing.T) {
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ := http.NewRequest("DELETE", "/goal/1", nil)
-	response := executeRequest(req)
+	req, _ = http.NewRequest("DELETE", "/goal/1", nil)
+	response = executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 
-	req, _ := http.NewRequest("GET", "/goal/1", nil)
-	response := executeRequest(req)
+	req, _ = http.NewRequest("GET", "/goal/1", nil)
+	response = executeRequest(req)
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 
 }
