@@ -103,3 +103,16 @@ func (a *App) updateGoal(w http.ResponseWriter, r *http.Request) {
 	}
 	respondWithJSON(w, http.StatusOK, g)
 }
+
+func (a *App) deleteGoal(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid Goal ID")
+	}
+	g := goal{ID: id}
+	if err := g.deleteGoal(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+	}
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
+}
