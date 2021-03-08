@@ -2,6 +2,7 @@ package todo_api
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -66,4 +67,18 @@ func (a *App) getGoals(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	respondWithJSON(w, http.StatusOK, goals)
+}
+
+func (a *App) addGoal(w http.ResponseWriter, r *http.Request) {
+	var g goal
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&g); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid Request!")
+		return
+	}
+	defer r.Body.Close()
+	if err := g.addGoal(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+	}
+	respondWithJSON(w, http.StatusCreated, g)
 }
