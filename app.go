@@ -82,3 +82,24 @@ func (a *App) addGoal(w http.ResponseWriter, r *http.Request) {
 	}
 	respondWithJSON(w, http.StatusCreated, g)
 }
+func (a *App) updateGoal(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid Goal ID!")
+		return
+	}
+	var g goal
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&g); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid Request!")
+		return
+	}
+	defer r.Body.Close()
+	g.ID = id
+	if err := g.updateGoal(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJSON(w, http.StatusOK, g)
+}
