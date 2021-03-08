@@ -26,10 +26,19 @@ func (a *App) Initialize(user, password, dbname string) {
 		log.Fatal(err)
 	}
 	a.Router = mux.NewRouter()
+	a.initializeRoutes()
 }
 
 func (a *App) Run(addr string) {
+	log.Fatal(http.ListenAndServe(":8010", a.Router))
+}
 
+func (a *App) initializeRoutes() {
+	a.Router.HandleFunc("/goals", a.getGoals).Methods("GET")
+	a.Router.HandleFunc("/goal/{id:[0-9]+}", a.getGoal).Methods("GET")
+	a.Router.HandleFunc("/goal/{id:[0-9]+}", a.updateGoal).Methods("PUT")
+	a.Router.HandleFunc("/goal/{id:[0-9]+}", a.addGoal).Methods("POST")
+	a.Router.HandleFunc("/goal/{id:[0-9]+}", a.deleteGoal).Methods("DELETE")
 }
 
 func (a *App) getGoal(w http.ResponseWriter, r *http.Request) {
