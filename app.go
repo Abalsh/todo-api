@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -27,4 +29,24 @@ func (a *App) Initialize(user, password, dbname string) {
 
 func (a *App) Run(addr string) {
 
+}
+
+func (a *App) getGoal(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid goal ID")
+		return
+	}
+	g := goal{ID: id}
+	if err := g.getGoal(a.DB); err != nil {
+		switch err {
+		case sql.ErrNoRows:
+			respondWithError(w, http.StatusNotFound, "Goal is not found")
+		default:
+			respondWithError(w, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+	respondWithJson(w, http.StatusOK, g)
 }
