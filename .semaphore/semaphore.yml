@@ -11,4 +11,5 @@ blocks:
         - name: go test
           commands:
             - sem-service start postgres
+            - ls
             - go test
